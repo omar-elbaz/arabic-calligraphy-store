@@ -1,1 +1,1 @@
-web: composer run start
+web: PORT=3000 composer run start
