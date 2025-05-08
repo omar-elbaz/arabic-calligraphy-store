@@ -1,4 +1,9 @@
 {
+  "config": {
+    "platform": {
+      "php": "8.3"
+    }
+  },
   "scripts": {
     "start": "php -S 0.0.0.0:$PORT"
   },
