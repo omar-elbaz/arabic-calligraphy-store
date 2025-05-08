@@ -1,5 +1,8 @@
 <?php
 require_once __DIR__ . '/db.php';
+require_once __DIR__ . '/../vendor/autoload.php';
+
+use Mailgun\Mailgun;
 
 function sendOrderReceipt($orderId, $userEmail) {
     global $pdo;
@@ -87,14 +90,19 @@ function sendOrderReceipt($orderId, $userEmail) {
         </body>
         </html>";
 
-        // Set headers for HTML email
-        $headers = "MIME-Version: 1.0" . "\r\n";
-        $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-        $headers .= 'From: Arabic Calligraphy Store <noreply@arabiccalligraphystore.com>' . "\r\n";
+        // Initialize Mailgun
+        $mg = Mailgun::create($_ENV['MAILGUN_API_KEY']);
+        
+        // Send email using Mailgun
+        $result = $mg->messages()->send($_ENV['MAILGUN_DOMAIN'], [
+            'from'    => 'Arabic Calligraphy Store <noreply@' . $_ENV['MAILGUN_DOMAIN'] . '>',
+            'to'      => $userEmail,
+            'subject' => $subject,
+            'html'    => $message
+        ]);
 
-        // Send email
-        return mail($userEmail, $subject, $message, $headers);
-    } catch (PDOException $e) {
+        return true;
+    } catch (Exception $e) {
         error_log("Error sending order receipt: " . $e->getMessage());
         return false;
     }
