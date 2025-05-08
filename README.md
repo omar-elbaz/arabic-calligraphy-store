@@ -25,20 +25,18 @@ A modern PHP e-commerce web app for Arabic calligraphy art. Users can browse, ad
 ```
 / (project root)
 ├── assets/                # Product images and favicon
-├── backend/               # Backend logic (form handlers, AJAX, etc.)
-│   ├── process_login.php
-│   ├── process_register.php
-│   ├── update_profile.php
-│   ├── add_to_cart.php
-│   ├── logout.php
-│   └── finalize_checkout.php
-├── frontend/              # User-facing pages
-│   ├── index.php
-│   ├── cart.php
-│   ├── checkout.php
-│   ├── login.php
-│   ├── register.php
-│   └── profile.php
+├── process_login.php
+├── process_register.php
+├── update_profile.php
+├── add_to_cart.php
+├── logout.php
+└── finalize_checkout.php
+├── index.php
+├── cart.php
+├── checkout.php
+├── login.php
+├── register.php
+└── profile.php
 ├── includes/              # Shared PHP includes (header, db, products)
 ├── scripts/               # Setup scripts (e.g., setup_db.sh)
 ├── style.css              # Main stylesheet

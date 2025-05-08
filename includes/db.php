@@ -9,6 +9,8 @@ $dbname = $_ENV['DB_NAME'] ?? null;
 $db_user = $_ENV['DB_USER'] ?? null;
 $db_pass = $_ENV['DB_PASS'] ?? null;
 $dsn = "pgsql:host=$host;port=$port;dbname=$dbname;";
+$pdo = new PDO($dsn, $db_user, $db_pass);
+
 
 
 
