@@ -1,2 +1,11 @@
 .env
 vendor/
+composer.lock
+composer.phar
+/vendor/
+.env.local
+.env.*.local
+.phpunit.result.cache
+.phpunit.cache
+.DS_Store
+Thumbs.db
