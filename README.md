@@ -8,6 +8,7 @@ A modern PHP e-commerce web app for Arabic calligraphy art. Users can browse, ad
 - **CSS** — Responsive and modern styling
 - **PostgreSQL** — Relational database for users, profiles, and cart data
 - **Railway** — Cloud hosting and managed PostgreSQL
+- **Mailgun** — API used to efficiently send emails to users.
 
 ## Features
 
@@ -19,6 +20,7 @@ A modern PHP e-commerce web app for Arabic calligraphy art. Users can browse, ad
 - Responsive design and modern UI
 - Checkout with profile confirmation in a modal popup
 - Thank you page after purchase
+- Confirmation Email Sent
 
 ## File Structure
 
