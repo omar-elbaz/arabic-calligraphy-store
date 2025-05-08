@@ -13,11 +13,16 @@ try {
     // Start transaction
     $pdo->beginTransaction();
 
-    // Get user ID
-    $stmt = $pdo->prepare('SELECT id FROM users WHERE email = ?');
+    // Get user ID and address
+    $stmt = $pdo->prepare('SELECT id, address FROM users WHERE email = ?');
     $stmt->execute([$_SESSION['user']]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
     $userId = $user['id'];
+    $shippingAddress = $user['address'];
+
+    if (empty($shippingAddress)) {
+        throw new Exception('Shipping address is required');
+    }
 
     // Calculate total
     $total = 0;
@@ -26,8 +31,8 @@ try {
     }
 
     // Create order
-    $stmt = $pdo->prepare('INSERT INTO orders (user_id, total_amount, status) VALUES (?, ?, ?)');
-    $stmt->execute([$userId, $total, 'pending']);
+    $stmt = $pdo->prepare('INSERT INTO orders (user_id, total_amount, status, shipping_address) VALUES (?, ?, ?, ?)');
+    $stmt->execute([$userId, $total, 'pending', $shippingAddress]);
     $orderId = $pdo->lastInsertId();
 
     // Add order items

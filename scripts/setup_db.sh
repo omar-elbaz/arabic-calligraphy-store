@@ -28,6 +28,7 @@ CREATE TABLE IF NOT EXISTS orders (
     user_id INTEGER REFERENCES users(id),
     total_amount DECIMAL(10,2) NOT NULL,
     status VARCHAR(50) DEFAULT 'pending',
+    shipping_address TEXT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 

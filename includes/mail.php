@@ -1,7 +1,9 @@
 <?php
-require_once 'db.php';
+require_once __DIR__ . '/db.php';
 
 function sendOrderReceipt($orderId, $userEmail) {
+    global $pdo;
+    
     try {
         // Get order details
         $stmt = $pdo->prepare("
