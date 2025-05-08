@@ -45,10 +45,11 @@ try {
     $pdo->commit();
 
     // Send receipt email
-    if (sendOrderReceipt($orderId, $_SESSION['user'])) {
-        $_SESSION['order_success'] = true;
-    } else {
-        error_log("Failed to send order receipt email for order #" . $orderId);
+    try {
+        sendOrderReceipt($orderId, $_SESSION['user']);
+    } catch (Exception $e) {
+        // Log the error but don't show it to the user
+        error_log("Failed to send order receipt email for order #" . $orderId . ": " . $e->getMessage());
     }
 
     // Clear cart
@@ -62,6 +63,9 @@ try {
     header('Location: cart.php');
     exit();
 }
+
+// Disable error reporting for the rest of the script
+error_reporting(0);
 ?>
 <!DOCTYPE html>
 <html>

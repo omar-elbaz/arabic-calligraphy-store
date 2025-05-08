@@ -18,6 +18,11 @@ function sendOrderReceipt($orderId, $userEmail) {
         $stmt->execute([$orderId]);
         $order = $stmt->fetch(PDO::FETCH_ASSOC);
 
+        if (!$order) {
+            error_log("Order not found: " . $orderId);
+            return false;
+        }
+
         // Get order items
         $stmt = $pdo->prepare("
             SELECT oi.*, p.name, p.price
@@ -36,6 +41,9 @@ function sendOrderReceipt($orderId, $userEmail) {
 
         // Create email content
         $subject = "Order Confirmation - Order #" . $orderId;
+        
+        // Format the date with a fallback
+        $orderDate = !empty($order['created_at']) ? date('F j, Y', strtotime($order['created_at'])) : date('F j, Y');
         
         $message = "
         <html>
@@ -59,7 +67,7 @@ function sendOrderReceipt($orderId, $userEmail) {
                 
                 <div class='order-details'>
                     <h2>Order Details</h2>
-                    <p><strong>Order Date:</strong> " . date('F j, Y', strtotime($order['created_at'])) . "</p>
+                    <p><strong>Order Date:</strong> " . $orderDate . "</p>
                     <p><strong>Shipping Address:</strong><br>" . nl2br(htmlspecialchars($order['shipping_address'])) . "</p>
                 </div>
 

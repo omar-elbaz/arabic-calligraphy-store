@@ -22,6 +22,16 @@ CREATE TABLE IF NOT EXISTS users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Create products table
+CREATE TABLE IF NOT EXISTS products (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    price DECIMAL(10,2) NOT NULL,
+    image VARCHAR(255) NOT NULL,
+    description TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 -- Create orders table
 CREATE TABLE IF NOT EXISTS orders (
     id SERIAL PRIMARY KEY,
@@ -36,7 +46,7 @@ CREATE TABLE IF NOT EXISTS orders (
 CREATE TABLE IF NOT EXISTS order_items (
     id SERIAL PRIMARY KEY,
     order_id INTEGER REFERENCES orders(id),
-    product_id INTEGER NOT NULL,
+    product_id INTEGER REFERENCES products(id),
     quantity INTEGER NOT NULL,
     price DECIMAL(10,2) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -53,10 +63,21 @@ INSERT INTO users (email, password, first_name, last_name, address, phone) VALUE
 )
 ON CONFLICT (email) DO NOTHING;
 
+-- Insert products
+INSERT INTO products (name, price, image, description) VALUES
+    ('Bismillah Wall Art', 35.00, 'assets/bismil.jpg', 'Beautiful Bismillah calligraphy perfect for your home or office.'),
+    ('Alhamdulillah Calligraphy', 45.00, 'assets/alhamd.jpg', 'Elegant Alhamdulillah design in traditional Arabic calligraphy.'),
+    ('Ayatul Kursi Poster', 60.00, 'assets/ayat.jpg', 'Ayatul Kursi beautifully rendered in classic Arabic calligraphy style.'),
+    ('Golden Calligraphy', 70.00, 'assets/golden_caligraphy.jpg', 'A stunning golden Arabic calligraphy piece that adds luxury to any space.'),
+    ('Calligraphy Trio', 90.00, 'assets/caligraphy_trio.jpg', 'A trio of calligraphy artworks, perfect for a modern and elegant wall display.'),
+    ('Classic Calligraphy Art', 55.00, 'assets/caligraphy1.jpg', 'Classic Arabic calligraphy with timeless beauty and intricate detail.')
+ON CONFLICT (id) DO NOTHING;
+
 -- Create indexes for better performance
 CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
 CREATE INDEX IF NOT EXISTS idx_orders_user_id ON orders(user_id);
 CREATE INDEX IF NOT EXISTS idx_order_items_order_id ON order_items(order_id);
+CREATE INDEX IF NOT EXISTS idx_products_name ON products(name);
 EOF
 
 echo "Database setup complete!"
